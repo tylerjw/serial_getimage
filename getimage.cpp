@@ -1,14 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pngwriter.h>
+#include <unistd.h>
 #include "arduino-serial-lib.h"
 
 using namespace std;
 
 #define SERIAL_PORT		"/dev/tty.usbmodem1421"
 #define OUT_FILENAME	"image.png"
-#define BAUD			9600
-#define TIMEOUT			5000
+#define BAUD			115200
+#define TIMEOUT			500000
 #define WIDTH 			640
 #define HEIGHT			480
 #define NUM_PIXELS		(WIDTH*HEIGHT)
@@ -45,10 +46,13 @@ int main()
 		exit(-1);
 	}
 
-	serialport_write(fd, "x"); // start the stream
+	printf("Waiting for reset... \n");
+	usleep(5000 * 1000);
+	printf("recieving image... \n");
+	serialport_writebyte(fd, 'x'); // start the stream
 
 	serialport_read(fd, image_data, IMAGE_SIZE, TIMEOUT);
-
+	printf("writing image to file... \n");
 	png_image(image_data, OUT_FILENAME);
 
 	return 0;

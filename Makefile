@@ -17,6 +17,10 @@ CXX = g++
 $(TARGET): $(OBJECTS)
 	$(CXX) $(OBJECTS) $(LDFLAGS) -o $(TARGET)
 
+serial_test: arduino-serial-lib.o serial_test.o
+	$(CXX) arduino-serial-lib.o serial_test.o $(LDFLAGS) -o serial_test
+
+serial_test.o: arduino-serial-lib.h 
 arduino-serial-lib.o : arduino-serial-lib.h 
 getimage.o: arduino-serial-lib.h
 
